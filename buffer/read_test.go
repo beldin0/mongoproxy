@@ -2,9 +2,9 @@ package buffer
 
 import (
 	"encoding/binary"
-	"github.com/mongodbinc-interns/mongoproxy/mock"
+	"github.com/mongodb-labs/mongoproxy/mock"
 	. "github.com/smartystreets/goconvey/convey"
-	"gopkg.in/mgo.v2/bson"
+	"go.mongodb.org/mongo-driver/bson"
 	"testing"
 )
 

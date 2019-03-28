@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PROXY_PKG='github.com/mongodbinc-interns/mongoproxy';
+PROXY_PKG='github.com/mongodb-labs/mongoproxy';
 
 setgopath() {
 	if [ "Windows_NT" != "$OS" ]; then

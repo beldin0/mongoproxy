@@ -3,7 +3,7 @@
 package messages
 
 import (
-	"gopkg.in/mgo.v2/bson"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 // constants representing the different opcodes for the wire protocol.
@@ -59,7 +59,7 @@ func (c Command) ToBSON() bson.D {
 
 	for arg, value := range c.Args {
 		if arg != c.CommandName {
-			args = append(args, bson.DocElem{arg, value})
+			args = append(args, bson.E{arg, value})
 		}
 	}
 
@@ -119,7 +119,7 @@ func (i Insert) ToBSON() bson.D {
 	}
 
 	if i.WriteConcern != nil {
-		args = append(args, bson.DocElem{"writeConcern", *i.WriteConcern})
+		args = append(args, bson.E{"writeConcern", *i.WriteConcern})
 	}
 
 	return args
@@ -166,7 +166,7 @@ func (u Update) ToBSON() bson.D {
 	}
 
 	if u.WriteConcern != nil {
-		args = append(args, bson.DocElem{"writeConcern", *u.WriteConcern})
+		args = append(args, bson.E{"writeConcern", *u.WriteConcern})
 	}
 
 	return args
@@ -209,7 +209,7 @@ func (d Delete) ToBSON() bson.D {
 	}
 
 	if d.WriteConcern != nil {
-		args = append(args, bson.DocElem{"writeConcern", *d.WriteConcern})
+		args = append(args, bson.E{"writeConcern", *d.WriteConcern})
 	}
 
 	return args

@@ -1,17 +1,19 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
-	"github.com/mongodbinc-interns/mongoproxy"
-	"github.com/mongodbinc-interns/mongoproxy/convert"
-	. "github.com/mongodbinc-interns/mongoproxy/log"
-	"github.com/mongodbinc-interns/mongoproxy/messages"
-	"github.com/mongodbinc-interns/mongoproxy/modules/bi/frontend"
-	"github.com/mongodbinc-interns/mongoproxy/modules/bi/frontend/controllers"
-	_ "github.com/mongodbinc-interns/mongoproxy/server/config"
-	"gopkg.in/mgo.v2"
-	"gopkg.in/mgo.v2/bson"
+
+	"github.com/mongodb-labs/mongoproxy"
+	"github.com/mongodb-labs/mongoproxy/convert"
+	. "github.com/mongodb-labs/mongoproxy/log"
+	"github.com/mongodb-labs/mongoproxy/messages"
+	"github.com/mongodb-labs/mongoproxy/modules/bi/frontend"
+	"github.com/mongodb-labs/mongoproxy/modules/bi/frontend/controllers"
+	_ "github.com/mongodb-labs/mongoproxy/server/config"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 var (
@@ -46,7 +48,7 @@ func main() {
 	var err error
 	if len(configFilename) == 0 {
 		result, err = mongoproxy.ParseConfigFromDB(mongoURI, configNamespace)
-		mongoSession, err := mgo.Dial(mongoURI)
+		mongoSession, err := mongo.Connect(context.Background(), mongoURI)
 
 		if err == nil {
 			database, collection, err := messages.ParseNamespace(configNamespace)

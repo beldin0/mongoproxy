@@ -2,11 +2,11 @@ package main
 
 import (
 	"flag"
-	"github.com/mongodbinc-interns/mongoproxy"
-	. "github.com/mongodbinc-interns/mongoproxy/log"
-	"github.com/mongodbinc-interns/mongoproxy/server"
-	_ "github.com/mongodbinc-interns/mongoproxy/server/config"
-	"gopkg.in/mgo.v2/bson"
+	"github.com/mongodb-labs/mongoproxy"
+	. "github.com/mongodb-labs/mongoproxy/log"
+	"github.com/mongodb-labs/mongoproxy/server"
+	_ "github.com/mongodb-labs/mongoproxy/server/config"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 var (

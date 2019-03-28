@@ -4,16 +4,17 @@ import (
 	"bytes"
 	"encoding/binary"
 	"fmt"
-	"github.com/mongodbinc-interns/mongoproxy/buffer"
-	"github.com/mongodbinc-interns/mongoproxy/convert"
-	. "github.com/mongodbinc-interns/mongoproxy/log"
-	"gopkg.in/mgo.v2/bson"
 	"io"
 	"strings"
+
+	"github.com/mongodb-labs/mongoproxy/buffer"
+	"github.com/mongodb-labs/mongoproxy/convert"
+	. "github.com/mongodb-labs/mongoproxy/log"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 func splitCommandOpQuery(q bson.D) (string, bson.M) {
-	commandName := q[0].Name
+	commandName := q[0].Key
 
 	args := bson.M{}
 
@@ -21,7 +22,7 @@ func splitCommandOpQuery(q bson.D) (string, bson.M) {
 	// name, as some of the commands have an important argument attached
 	// to the command definition as well.
 	for i := 0; i < len(q); i++ {
-		args[q[i].Name] = q[i].Value
+		args[q[i].Key] = q[i].Value
 	}
 
 	return commandName, args

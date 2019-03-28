@@ -3,12 +3,14 @@
 package mockule
 
 import (
-	. "github.com/mongodbinc-interns/mongoproxy/log"
-	"github.com/mongodbinc-interns/mongoproxy/messages"
-	"github.com/mongodbinc-interns/mongoproxy/server"
-	"gopkg.in/mgo.v2/bson"
 	"math/rand"
 	"strconv"
+	"time"
+
+	. "github.com/mongodb-labs/mongoproxy/log"
+	"github.com/mongodb-labs/mongoproxy/messages"
+	"github.com/mongodb-labs/mongoproxy/server"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 var maxWireVersion = 3
@@ -133,7 +135,7 @@ func (m Mockule) Process(req messages.Requester, res messages.Responder,
 			r := bson.M{}
 			r["ismaster"] = true
 			r["secondary"] = false
-			r["localTime"] = bson.Now()
+			r["localTime"] = time.Now()
 			r["maxWireVersion"] = maxWireVersion
 			r["minWireVersion"] = 0
 			r["maxWriteBatchSize"] = 1000
@@ -185,7 +187,7 @@ func (m Mockule) Process(req messages.Requester, res messages.Responder,
 		case "replSetGetStatus":
 			r := bson.M{}
 			r["set"] = "repl"
-			r["date"] = bson.Now()
+			r["date"] = time.Now()
 			r["myState"] = 1
 			members := make([]bson.M, 0)
 

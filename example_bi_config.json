@@ -1,24 +1,6 @@
 {
 	"modules": [
 		{
-			"name": "bi",
-			"config": {
-				"connection": {
-					"addresses": [
-						"localhost:27017"
-					]
-				},
-				"rules": [
-					{
-						"origin": "test.foo",
-						"prefix": "db.metrics",
-						"timeGranularity": ["M", "D", "h", "m", "s"],
-						"valueField": "price"
-					}
-				]
-			}
-		},
-		{
 			"name": "mongod",
 			"config": {
 				"addresses": [

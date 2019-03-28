@@ -4,11 +4,11 @@ import (
 	"bytes"
 	"encoding/binary"
 	"fmt"
-	"github.com/mongodbinc-interns/mongoproxy/buffer"
-	. "github.com/mongodbinc-interns/mongoproxy/log"
-	"github.com/mongodbinc-interns/mongoproxy/mock"
+	"github.com/mongodb-labs/mongoproxy/buffer"
+	. "github.com/mongodb-labs/mongoproxy/log"
+	"github.com/mongodb-labs/mongoproxy/mock"
 	. "github.com/smartystreets/goconvey/convey"
-	"gopkg.in/mgo.v2/bson"
+	"go.mongodb.org/mongo-driver/bson"
 	"testing"
 )
 

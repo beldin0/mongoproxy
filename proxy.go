@@ -1,18 +1,22 @@
 package mongoproxy
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/mongodbinc-interns/mongoproxy/convert"
-	. "github.com/mongodbinc-interns/mongoproxy/log"
-	"github.com/mongodbinc-interns/mongoproxy/messages"
-	"github.com/mongodbinc-interns/mongoproxy/server"
-	_ "github.com/mongodbinc-interns/mongoproxy/server/config"
-	"gopkg.in/mgo.v2"
-	"gopkg.in/mgo.v2/bson"
 	"io"
 	"io/ioutil"
 	"net"
+	"time"
+
+	"github.com/mongodb-labs/mongoproxy/convert"
+	. "github.com/mongodb-labs/mongoproxy/log"
+	"github.com/mongodb-labs/mongoproxy/messages"
+	"github.com/mongodb-labs/mongoproxy/server"
+	_ "github.com/mongodb-labs/mongoproxy/server/config" // Loads config in init()
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 // ParseConfigFromFile takes a filename for a JSON file, and returns a configuration
@@ -39,8 +43,11 @@ func ParseConfigFromFile(configFilename string) (bson.M, error) {
 func ParseConfigFromDB(mongoURI string, configNamespace string) (bson.M, error) {
 	var result bson.M
 
-	mongoSession, err := mgo.Dial(mongoURI)
-	defer mongoSession.Close()
+	ctx, _ := context.WithTimeout(context.Background(), 3*time.Second)
+	mongoSession, err := mongo.Connect(ctx, &options.ClientOptions{
+		Hosts: []string{mongoURI},
+	})
+	defer ctx.Done()
 	if err != nil {
 		return nil, fmt.Errorf("Error connecting to MongoDB instance: %v", err)
 	}
@@ -50,9 +57,18 @@ func ParseConfigFromDB(mongoURI string, configNamespace string) (bson.M, error) 
 		return nil, fmt.Errorf("Invalid namespace: %v", err)
 	}
 
-	err = mongoSession.DB(database).C(collection).Find(bson.M{}).One(&result)
+	coll := mongoSession.Database(database).Collection(collection)
+	cur, err := coll.Find(ctx, bson.M{})
 	if err != nil {
+		return nil, err
+	}
+	if !cur.Next(ctx) {
 		return nil, fmt.Errorf("Error querying MongoDB for configuration: %v", err)
+	}
+
+	for cur.Next(ctx) {
+		var result bson.M
+		cur.Decode(result)
 	}
 
 	return result, nil

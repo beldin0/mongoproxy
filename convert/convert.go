@@ -3,7 +3,7 @@ package convert
 
 import (
 	"fmt"
-	"gopkg.in/mgo.v2/bson"
+	"go.mongodb.org/mongo-driver/bson"
 	"strconv"
 )
 

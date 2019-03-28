@@ -1,10 +1,11 @@
 package bsonutil
 
 import (
-	. "github.com/mongodbinc-interns/mongoproxy/log"
-	. "github.com/smartystreets/goconvey/convey"
-	"gopkg.in/mgo.v2/bson"
 	"testing"
+
+	. "github.com/mongodb-labs/mongoproxy/log"
+	. "github.com/smartystreets/goconvey/convey"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 func TestFindByValueD(t *testing.T) {
